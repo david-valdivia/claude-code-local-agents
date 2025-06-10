@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,15 +30,15 @@
         <!-- Agent Selector -->
         <div class="mb-8 p-6 bg-gray-50 rounded-lg">
             <div class="mb-5">
-                <label for="agentSelect" class="block text-sm font-semibold text-gray-700 mb-2">Seleccionar Agente:</label>
+                <label for="agentSelect" class="block text-sm font-semibold text-gray-700 mb-2">Select Agent:</label>
                 <div class="flex">
                     <select id="agentSelect" class="flex-1 px-3 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="">-- Seleccionar agente existente --</option>
-                        <option value="new">+ Crear nuevo agente</option>
+                        <option value="">-- Select existing agent --</option>
+                        <option value="new">+ Create new agent</option>
                     </select>
                     <div id="agentActions" class="hidden">
-                        <button class="px-4 py-3 bg-cyan-500 text-white hover:bg-cyan-600 border-l border-white/20" onclick="viewAgentDetails()" title="Ver Detalles">📋</button>
-                        <button class="px-4 py-3 bg-yellow-500 text-gray-900 hover:bg-yellow-600 rounded-r-lg border-l border-white/20" onclick="editAgent()" title="Editar">✏️</button>
+                        <button class="px-4 py-3 bg-cyan-500 text-white hover:bg-cyan-600 border-l border-white/20" onclick="viewAgentDetails()" title="View Details">📋</button>
+                        <button class="px-4 py-3 bg-yellow-500 text-gray-900 hover:bg-yellow-600 rounded-r-lg border-l border-white/20" onclick="editAgent()" title="Edit">✏️</button>
                     </div>
                 </div>
             </div>
@@ -46,29 +46,29 @@
 
         <!-- Agent Form -->
         <div id="agentForm" class="hidden p-6 bg-gray-200 rounded-lg mt-5">
-            <h3 class="text-xl font-semibold mb-4">Crear Nuevo Agente</h3>
+            <h3 class="text-xl font-semibold mb-4">Create New Agent</h3>
             <form onsubmit="createAgent(event)">
                 <div class="mb-5">
-                    <label for="agentName" class="block text-sm font-semibold text-gray-700 mb-2">Nombre del Agente:</label>
-                    <input type="text" id="agentName" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Asistente de Matemáticas" required>
+                    <label for="agentName" class="block text-sm font-semibold text-gray-700 mb-2">Agent Name:</label>
+                    <input type="text" id="agentName" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g: Math Assistant" required>
                     <div id="nameError" class="text-red-500 text-xs mt-1"></div>
                 </div>
                 
                 <div class="mb-5">
-                    <label for="agentDescription" class="block text-sm font-semibold text-gray-700 mb-2">Descripción:</label>
-                    <textarea id="agentDescription" class="w-full px-3 py-3 border border-gray-300 rounded-lg resize-y min-h-[100px] focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Describe las funciones y especialidades del agente..." required></textarea>
+                    <label for="agentDescription" class="block text-sm font-semibold text-gray-700 mb-2">Description:</label>
+                    <textarea id="agentDescription" class="w-full px-3 py-3 border border-gray-300 rounded-lg resize-y min-h-[100px] focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Describe the agent's functions and specialties..." required></textarea>
                     <div id="descError" class="text-red-500 text-xs mt-1"></div>
                 </div>
                 
                 <div class="mb-5">
-                    <label for="tokenLimit" class="block text-sm font-semibold text-gray-700 mb-2">Límite de Tokens:</label>
-                    <input type="number" id="tokenLimit" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 4000" min="1" required>
+                    <label for="tokenLimit" class="block text-sm font-semibold text-gray-700 mb-2">Token Limit:</label>
+                    <input type="number" id="tokenLimit" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g: 4000" min="1" required>
                     <div id="tokenError" class="text-red-500 text-xs mt-1"></div>
                 </div>
                 
                 <div class="flex gap-3">
-                    <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Crear Agente</button>
-                    <button type="button" onclick="cancelForm()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Create Agent</button>
+                    <button type="button" onclick="cancelForm()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">Cancel</button>
                 </div>
             </form>
         </div>
@@ -78,30 +78,30 @@
         
         <!-- Text Processor -->
         <div id="textProcessor" class="hidden mt-8 p-6 bg-gray-50 rounded-lg">
-            <h3 class="text-xl font-semibold mb-4">Procesamiento de Texto</h3>
-            <p class="mb-4"><strong>Agente:</strong> <span id="processorAgentName" class="text-blue-600"></span></p>
+            <h3 class="text-xl font-semibold mb-4">Text Processing</h3>
+            <p class="mb-4"><strong>Agent:</strong> <span id="processorAgentName" class="text-blue-600"></span></p>
             
             <div class="mb-5">
-                <label for="inputText" class="block text-sm font-semibold text-gray-700 mb-2">Texto a procesar:</label>
-                <textarea id="inputText" class="w-full px-4 py-4 border border-gray-300 rounded-lg resize-y min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Introduce aquí el texto que quieres que procese el agente..."></textarea>
+                <label for="inputText" class="block text-sm font-semibold text-gray-700 mb-2">Text to process:</label>
+                <textarea id="inputText" class="w-full px-4 py-4 border border-gray-300 rounded-lg resize-y min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter the text you want the agent to process..."></textarea>
             </div>
             
             <div class="flex gap-3 mb-4">
                 <button id="processBtn" class="px-8 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" onclick="processText()">
-                    <span id="processText">Procesar Texto</span>
+                    <span id="processText">Process Text</span>
                 </button>
-                <button class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors" onclick="clearInputText()">🗑️ Limpiar</button>
-                <button id="refreshBtn" class="hidden px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" onclick="processTextRefresh()">🔄 Consultar de nuevo</button>
+                <button class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors" onclick="clearInputText()">🗑️ Clear</button>
+                <button id="refreshBtn" class="hidden px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors" onclick="processTextRefresh()">🔄 Query again</button>
             </div>
             
             <div id="cacheIndicator" class="hidden text-sm text-gray-600 mb-4"></div>
             
             <!-- Result Area -->
             <div id="resultArea" class="hidden mt-6">
-                <h4 class="text-lg font-semibold mb-3">Resultado:</h4>
+                <h4 class="text-lg font-semibold mb-3">Result:</h4>
                 <div id="resultContent" class="bg-white border border-gray-300 rounded-lg p-5 min-h-[100px] whitespace-pre-wrap font-mono text-sm leading-relaxed"></div>
                 <div class="flex justify-between items-center mt-4">
-                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm" onclick="copyResult()">📋 Copiar Resultado</button>
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm" onclick="copyResult()">📋 Copy Result</button>
                     <div id="tokenCount" class="text-sm text-gray-600"></div>
                 </div>
             </div>
@@ -118,13 +118,13 @@
                 agents = await response.json();
                 populateAgentSelect();
             } catch (error) {
-                console.error('Error cargando agentes:', error);
+                console.error('Error loading agents:', error);
             }
         }
 
         function populateAgentSelect() {
             const select = document.getElementById('agentSelect');
-            select.innerHTML = '<option value="">-- Seleccionar agente existente --</option>';
+            select.innerHTML = '<option value="">-- Select existing agent --</option>';
             
             agents.forEach(agent => {
                 const option = document.createElement('option');
@@ -135,7 +135,7 @@
             
             const newOption = document.createElement('option');
             newOption.value = 'new';
-            newOption.textContent = '+ Crear nuevo agente';
+            newOption.textContent = '+ Create new agent';
             select.appendChild(newOption);
         }
 
@@ -212,24 +212,24 @@
                     populateAgentSelect();
                     showAgentInfo(newAgent);
                     selectedAgent = newAgent;
-                    showSuccess('Agente creado exitosamente');
+                    showSuccess('Agent created successfully');
                 } else {
                     const errorData = await response.json();
                     if (errorData.errors) {
                         errorData.errors.forEach(error => {
-                            if (error.includes('nombre')) {
+                            if (error.includes('name')) {
                                 document.getElementById('nameError').textContent = error;
-                            } else if (error.includes('descripción')) {
+                            } else if (error.includes('description')) {
                                 document.getElementById('descError').textContent = error;
-                            } else if (error.includes('tokens')) {
+                            } else if (error.includes('token')) {
                                 document.getElementById('tokenError').textContent = error;
                             }
                         });
                     }
                 }
             } catch (error) {
-                console.error('Error creando agente:', error);
-                alert('Error al crear el agente');
+                console.error('Error creating agent:', error);
+                alert('Error creating the agent');
             }
         }
 
@@ -244,13 +244,13 @@
 
         async function processText() {
             if (!selectedAgent) {
-                alert('Por favor selecciona un agente primero');
+                alert('Please select an agent first');
                 return;
             }
 
             const inputText = document.getElementById('inputText').value.trim();
             if (!inputText) {
-                alert('Por favor introduce el texto a procesar');
+                alert('Please enter the text to process');
                 return;
             }
 
@@ -258,7 +258,7 @@
             const processTextSpan = document.getElementById('processText');
             
             processBtn.disabled = true;
-            processTextSpan.innerHTML = '<span class="loading"></span>Procesando...';
+            processTextSpan.innerHTML = '<span class="loading"></span>Processing...';
 
             try {
                 const response = await fetch('/api/process', {
@@ -277,19 +277,19 @@
                     document.getElementById('resultContent').textContent = result.processedText;
                     document.getElementById('resultArea').classList.remove('hidden');
                     
-                    // Calcular tokens aproximados
+                    // Calculate approximate tokens
                     const tokenCount = Math.ceil(result.processedText.length / 4);
-                    document.getElementById('tokenCount').textContent = `~${tokenCount} tokens generados`;
+                    document.getElementById('tokenCount').textContent = `~${tokenCount} tokens generated`;
                     
                     const cacheIndicator = document.getElementById('cacheIndicator');
                     const refreshBtn = document.getElementById('refreshBtn');
                     
                     if (result.fromCache) {
-                        cacheIndicator.textContent = `📦 Resultado desde cache (${result.cacheInfo.accessCount} accesos)`;
+                        cacheIndicator.textContent = `📦 Result from cache (${result.cacheInfo.accessCount} accesses)`;
                         cacheIndicator.className = 'text-sm text-green-600 mb-4';
                         refreshBtn.classList.remove('hidden');
                     } else {
-                        cacheIndicator.textContent = '✨ Resultado nuevo generado';
+                        cacheIndicator.textContent = '✨ New result generated';
                         cacheIndicator.className = 'text-sm text-gray-600 mb-4';
                         refreshBtn.classList.add('hidden');
                     }
@@ -297,14 +297,14 @@
                     cacheIndicator.classList.remove('hidden');
                 } else {
                     const errorData = await response.json();
-                    alert('Error: ' + (errorData.error || 'Error desconocido'));
+                    alert('Error: ' + (errorData.error || 'Unknown error'));
                 }
             } catch (error) {
-                console.error('Error procesando texto:', error);
-                alert('Error al procesar el texto');
+                console.error('Error processing text:', error);
+                alert('Error processing the text');
             } finally {
                 processBtn.disabled = false;
-                processTextSpan.textContent = 'Procesar Texto';
+                processTextSpan.textContent = 'Process Text';
             }
         }
 
@@ -320,13 +320,13 @@
             navigator.clipboard.writeText(resultContent).then(() => {
                 const copyBtn = event.target;
                 const originalText = copyBtn.textContent;
-                copyBtn.textContent = '✅ Copiado!';
+                copyBtn.textContent = '✅ Copied!';
                 setTimeout(() => {
                     copyBtn.textContent = originalText;
                 }, 2000);
             }).catch(err => {
-                console.error('Error al copiar:', err);
-                alert('Error al copiar el texto');
+                console.error('Error copying:', err);
+                alert('Error copying the text');
             });
         }
 
@@ -337,13 +337,13 @@
                 title: `📋 ${selectedAgent.name}`,
                 html: `
                     <div style="text-align: left; padding: 20px;">
-                        <p><strong>Nombre:</strong> ${selectedAgent.name}</p>
-                        <p><strong>Descripción:</strong> ${selectedAgent.description}</p>
-                        <p><strong>Límite de Tokens:</strong> ${selectedAgent.tokenLimit}</p>
-                        <p><strong>Creado:</strong> ${new Date(selectedAgent.createdAt).toLocaleString()}</p>
+                        <p><strong>Name:</strong> ${selectedAgent.name}</p>
+                        <p><strong>Description:</strong> ${selectedAgent.description}</p>
+                        <p><strong>Token Limit:</strong> ${selectedAgent.tokenLimit}</p>
+                        <p><strong>Created:</strong> ${new Date(selectedAgent.createdAt).toLocaleString()}</p>
                     </div>
                 `,
-                confirmButtonText: 'Cerrar',
+                confirmButtonText: 'Close',
                 confirmButtonColor: '#3b82f6'
             });
         }
@@ -352,23 +352,23 @@
             if (!selectedAgent) return;
             
             const { value: formValues } = await Swal.fire({
-                title: `✏️ Editar ${selectedAgent.name}`,
+                title: `✏️ Edit ${selectedAgent.name}`,
                 html: `
                     <div style="text-align: left;">
-                        <label for="swal-name" style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre:</label>
+                        <label for="swal-name" style="display: block; margin-bottom: 5px; font-weight: bold;">Name:</label>
                         <input id="swal-name" class="swal2-input" value="${selectedAgent.name}" style="margin-bottom: 15px;">
                         
-                        <label for="swal-desc" style="display: block; margin-bottom: 5px; font-weight: bold;">Descripción:</label>
+                        <label for="swal-desc" style="display: block; margin-bottom: 5px; font-weight: bold;">Description:</label>
                         <textarea id="swal-desc" class="swal2-textarea" style="margin-bottom: 15px; height: 100px;">${selectedAgent.description}</textarea>
                         
-                        <label for="swal-tokens" style="display: block; margin-bottom: 5px; font-weight: bold;">Límite de Tokens:</label>
+                        <label for="swal-tokens" style="display: block; margin-bottom: 5px; font-weight: bold;">Token Limit:</label>
                         <input id="swal-tokens" class="swal2-input" type="number" value="${selectedAgent.tokenLimit}" min="1">
                     </div>
                 `,
                 focusConfirm: false,
                 showCancelButton: true,
-                confirmButtonText: 'Guardar',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Save',
+                cancelButtonText: 'Cancel',
                 confirmButtonColor: '#10b981',
                 cancelButtonColor: '#6b7280',
                 preConfirm: () => {
@@ -377,15 +377,15 @@
                     const tokenLimit = parseInt(document.getElementById('swal-tokens').value);
                     
                     if (!name) {
-                        Swal.showValidationMessage('El nombre es requerido');
+                        Swal.showValidationMessage('Name is required');
                         return false;
                     }
                     if (!description) {
-                        Swal.showValidationMessage('La descripción es requerida');
+                        Swal.showValidationMessage('Description is required');
                         return false;
                     }
                     if (!tokenLimit || tokenLimit <= 0) {
-                        Swal.showValidationMessage('El límite de tokens debe ser un número positivo');
+                        Swal.showValidationMessage('Token limit must be a positive number');
                         return false;
                     }
                     
@@ -418,8 +418,8 @@
                         document.getElementById('processorAgentName').textContent = updatedAgent.name;
                         
                         Swal.fire({
-                            title: '✅ Actualizado',
-                            text: 'El agente ha sido actualizado correctamente',
+                            title: '✅ Updated',
+                            text: 'The agent has been updated successfully',
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
@@ -428,15 +428,15 @@
                         const errorData = await response.json();
                         Swal.fire({
                             title: 'Error',
-                            text: errorData.error || 'Error al actualizar el agente',
+                            text: errorData.error || 'Error updating the agent',
                             icon: 'error'
                         });
                     }
                 } catch (error) {
-                    console.error('Error actualizando agente:', error);
+                    console.error('Error updating agent:', error);
                     Swal.fire({
                         title: 'Error',
-                        text: 'Error al actualizar el agente',
+                        text: 'Error updating the agent',
                         icon: 'error'
                     });
                 }
@@ -445,13 +445,13 @@
 
         async function processTextRefresh() {
             if (!selectedAgent) {
-                alert('Por favor selecciona un agente primero');
+                alert('Please select an agent first');
                 return;
             }
 
             const inputText = document.getElementById('inputText').value.trim();
             if (!inputText) {
-                alert('Por favor introduce el texto a procesar');
+                alert('Please enter the text to process');
                 return;
             }
 
@@ -461,7 +461,7 @@
             
             processBtn.disabled = true;
             refreshBtn.disabled = true;
-            processTextSpan.innerHTML = '<span class="loading"></span>Procesando...';
+            processTextSpan.innerHTML = '<span class="loading"></span>Processing...';
 
             try {
                 const response = await fetch('/api/process', {
@@ -481,26 +481,26 @@
                     document.getElementById('resultContent').textContent = result.processedText;
                     document.getElementById('resultArea').classList.remove('hidden');
                     
-                    // Calcular tokens aproximados
+                    // Calculate approximate tokens
                     const tokenCount = Math.ceil(result.processedText.length / 4);
-                    document.getElementById('tokenCount').textContent = `~${tokenCount} tokens generados`;
+                    document.getElementById('tokenCount').textContent = `~${tokenCount} tokens generated`;
                     
                     const cacheIndicator = document.getElementById('cacheIndicator');
-                    cacheIndicator.textContent = '✨ Resultado nuevo generado';
+                    cacheIndicator.textContent = '✨ New result generated';
                     cacheIndicator.className = 'text-sm text-gray-600 mb-4';
                     refreshBtn.classList.add('hidden');
                     cacheIndicator.classList.remove('hidden');
                 } else {
                     const errorData = await response.json();
-                    alert('Error: ' + (errorData.error || 'Error desconocido'));
+                    alert('Error: ' + (errorData.error || 'Unknown error'));
                 }
             } catch (error) {
-                console.error('Error procesando texto:', error);
-                alert('Error al procesar el texto');
+                console.error('Error processing text:', error);
+                alert('Error processing the text');
             } finally {
                 processBtn.disabled = false;
                 refreshBtn.disabled = false;
-                processTextSpan.textContent = 'Procesar Texto';
+                processTextSpan.textContent = 'Process Text';
             }
         }
 
