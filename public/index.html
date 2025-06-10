@@ -21,6 +21,49 @@
             animation: spin 1s linear infinite;
             margin-right: 10px;
         }
+        
+        /* Enhanced focus states and custom styling */
+        .swal2-modal {
+            width: 800px !important;
+            max-width: 800px !important;
+            padding: 2rem !important;
+        }
+        
+        .swal2-input, .swal2-textarea {
+            font-size: 16px !important;
+            padding: 12px !important;
+            border: 2px solid #d1d5db !important;
+            border-radius: 8px !important;
+            margin-bottom: 8px !important;
+            transition: border-color 0.2s ease !important;
+        }
+        
+        .swal2-input:focus, .swal2-textarea:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+            outline: none !important;
+        }
+        
+        .field-help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .agent-info-panel {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .copy-success {
+            background-color: #10b981 !important;
+            transform: scale(0.95);
+            transition: all 0.2s ease;
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-5">
@@ -101,7 +144,7 @@
                 <h4 class="text-lg font-semibold mb-3">Result:</h4>
                 <div id="resultContent" class="bg-white border border-gray-300 rounded-lg p-5 min-h-[100px] whitespace-pre-wrap font-mono text-sm leading-relaxed"></div>
                 <div class="flex justify-between items-center mt-4">
-                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm" onclick="copyResult()">📋 Copy Result</button>
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm" onclick="copyResult(this)">📋 Copy Result</button>
                     <div id="tokenCount" class="text-sm text-gray-600"></div>
                 </div>
             </div>
@@ -315,19 +358,70 @@
             document.getElementById('cacheIndicator').classList.add('hidden');
         }
 
-        function copyResult() {
+        function copyResult(button) {
             const resultContent = document.getElementById('resultContent').textContent;
-            navigator.clipboard.writeText(resultContent).then(() => {
-                const copyBtn = event.target;
-                const originalText = copyBtn.textContent;
-                copyBtn.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Error copying:', err);
-                alert('Error copying the text');
-            });
+            
+            // Modern clipboard API with fallback
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(resultContent)
+                    .then(() => showCopySuccess(button))
+                    .catch(err => {
+                        console.error('Clipboard API failed:', err);
+                        fallbackCopyText(resultContent, button);
+                    });
+            } else {
+                fallbackCopyText(resultContent, button);
+            }
+        }
+        
+        function showCopySuccess(button) {
+            const originalText = button.textContent;
+            const originalClass = button.className;
+            
+            button.textContent = '✅ Copied!';
+            button.classList.add('copy-success');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.className = originalClass;
+            }, 2000);
+        }
+        
+        function fallbackCopyText(text, button) {
+            try {
+                // Create a temporary textarea element
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                
+                textArea.focus();
+                textArea.select();
+                
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                if (successful) {
+                    showCopySuccess(button);
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                
+                // Final fallback - show text selection
+                const selection = window.getSelection();
+                const range = document.createRange();
+                const resultElement = document.getElementById('resultContent');
+                
+                range.selectNodeContents(resultElement);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                alert('Unable to copy automatically. The text has been selected - please use Ctrl+C (or Cmd+C) to copy.');
+            }
         }
 
         async function viewAgentDetails() {
@@ -352,23 +446,33 @@
             if (!selectedAgent) return;
             
             const { value: formValues } = await Swal.fire({
-                title: `✏️ Edit ${selectedAgent.name}`,
+                title: `✏️ Edit Agent`,
                 html: `
                     <div style="text-align: left;">
-                        <label for="swal-name" style="display: block; margin-bottom: 5px; font-weight: bold;">Name:</label>
-                        <input id="swal-name" class="swal2-input" value="${selectedAgent.name}" style="margin-bottom: 15px;">
+                        <div class="agent-info-panel">
+                            <h4 style="margin: 0 0 12px 0; color: #374151; font-size: 16px; font-weight: 600;">📋 Agent Information</h4>
+                            <p style="margin: 4px 0; color: #6b7280; font-size: 14px;"><strong>Current Name:</strong> ${selectedAgent.name}</p>
+                            <p style="margin: 4px 0; color: #6b7280; font-size: 14px;"><strong>Created:</strong> ${new Date(selectedAgent.createdAt).toLocaleString()}</p>
+                        </div>
                         
-                        <label for="swal-desc" style="display: block; margin-bottom: 5px; font-weight: bold;">Description:</label>
-                        <textarea id="swal-desc" class="swal2-textarea" style="margin-bottom: 15px; height: 100px;">${selectedAgent.description}</textarea>
+                        <label for="swal-name" style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151; font-size: 14px;">Agent Name:</label>
+                        <input id="swal-name" class="swal2-input" value="${selectedAgent.name}" style="width: 100%; font-size: 16px; padding: 12px; margin-bottom: 4px;">
+                        <div class="field-help">Choose a descriptive name that identifies the agent's purpose</div>
                         
-                        <label for="swal-tokens" style="display: block; margin-bottom: 5px; font-weight: bold;">Token Limit:</label>
-                        <input id="swal-tokens" class="swal2-input" type="number" value="${selectedAgent.tokenLimit}" min="1">
+                        <label for="swal-desc" style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151; font-size: 14px;">Description:</label>
+                        <textarea id="swal-desc" class="swal2-textarea" style="width: 100%; height: 120px; font-size: 16px; padding: 12px; margin-bottom: 4px; resize: vertical;">${selectedAgent.description}</textarea>
+                        <div class="field-help">Describe the agent's capabilities, specialties, and intended use cases</div>
+                        
+                        <label for="swal-tokens" style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151; font-size: 14px;">Token Limit:</label>
+                        <input id="swal-tokens" class="swal2-input" type="number" value="${selectedAgent.tokenLimit}" min="1" style="width: 100%; font-size: 16px; padding: 12px; margin-bottom: 4px;">
+                        <div class="field-help">Maximum number of tokens the agent can process (affects response length and complexity)</div>
                     </div>
                 `,
+                width: '800px',
                 focusConfirm: false,
                 showCancelButton: true,
-                confirmButtonText: 'Save',
-                cancelButtonText: 'Cancel',
+                confirmButtonText: '💾 Save Changes',
+                cancelButtonText: '❌ Cancel',
                 confirmButtonColor: '#10b981',
                 cancelButtonColor: '#6b7280',
                 preConfirm: () => {
