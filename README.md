@@ -12,6 +12,9 @@ This simple Node.js app lets you create specialized AI agents with different per
 - Web-based interface at http://localhost:3000
 - Each question is independent (no conversation memory)
 
+![Picture description](picture.png)
+
+
 ## Prerequisites
 
 - **Claude Pro Subscription** (required)
